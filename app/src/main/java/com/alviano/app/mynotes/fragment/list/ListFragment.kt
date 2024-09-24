@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.alviano.app.mynotes.R
+import com.alviano.app.mynotes.data.NoteViewModel
 
 class listFragment : Fragment() {
 
