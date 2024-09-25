@@ -5,12 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alviano.app.mynotes.R
-import com.alviano.app.mynotes.data.NoteViewModel
+import com.alviano.app.mynotes.viewmodel.NoteViewModel
 
 class listFragment : Fragment() {
+
+    private lateinit var mNoteViewModel: NoteViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -20,6 +25,19 @@ class listFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
         val fab = view.findViewById<View>(R.id.floatingActionButton2)
+
+        // Recyclerview
+        val adapter = ListAdapter()
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // UserViewModel
+        mNoteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
+        mNoteViewModel.readAllData.observe(viewLifecycleOwner, Observer { user ->
+            adapter.setData(user)
+        })
+
 
         fab.setOnClickListener {
             findNavController().navigate(R.id.action_listFragment_to_addFragment)

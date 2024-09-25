@@ -2,12 +2,10 @@ package com.alviano.app.mynotes.fragment.list
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.alviano.app.mynotes.R
-import com.alviano.app.mynotes.data.Note
+import com.alviano.app.mynotes.model.Note
 import com.alviano.app.mynotes.databinding.CustomRowBinding
 
 class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
@@ -32,6 +30,11 @@ class ListAdapter: RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
         holder.binding.idTxt.text = currentItem.id.toString()
         holder.binding.titleTxt.text = currentItem.title
         holder.binding.noteTxt.text = currentItem.note
+
+        holder.binding.rowLayout.setOnClickListener {
+            val action = listFragmentDirections.actionListFragmentToUpdateFragment(currentItem)
+            holder.itemView.findNavController().navigate(action)
+        }
     }
 
     fun setData(note: List<Note>){

@@ -1,15 +1,18 @@
-package com.alviano.app.mynotes.data
+package com.alviano.app.mynotes.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.alviano.app.mynotes.data.NoteDatabase
+import com.alviano.app.mynotes.repository.NoteRepository
+import com.alviano.app.mynotes.model.Note
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class NoteViewModel(application: Application): AndroidViewModel(application) {
 
-    private val readAllData: LiveData<List<Note>>
+    val readAllData: LiveData<List<Note>>
     private val repository: NoteRepository
 
     init {
@@ -21,6 +24,12 @@ class NoteViewModel(application: Application): AndroidViewModel(application) {
     fun addNote(note: Note) {
         viewModelScope.launch(Dispatchers.IO){
             repository.addNote(note)
+        }
+    }
+
+    fun updateNote(note: Note) {
+        viewModelScope.launch(Dispatchers.IO){
+            repository.updateNote(note)
         }
     }
 

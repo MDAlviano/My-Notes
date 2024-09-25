@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.alviano.app.mynotes.R
-import com.alviano.app.mynotes.data.Note
-import com.alviano.app.mynotes.data.NoteViewModel
+import com.alviano.app.mynotes.model.Note
+import com.alviano.app.mynotes.viewmodel.NoteViewModel
 
 class addFragment : Fragment() {
 
