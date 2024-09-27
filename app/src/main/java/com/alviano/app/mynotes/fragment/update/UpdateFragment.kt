@@ -4,11 +4,15 @@ import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -48,6 +52,9 @@ class UpdateFragment : Fragment() {
             updateItem()
         }
 
+        // Add menu
+        setHasOptionsMenu(true)
+
         return view
     }
 
@@ -72,5 +79,28 @@ class UpdateFragment : Fragment() {
         return !(TextUtils.isEmpty(title) && TextUtils.isEmpty(note))
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.delete_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.menu_delete){
+            deleteNote()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteNote() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Yes"){ _, _ ->
+            mNoteViewModel.deleteNote(args.currentNote)
+            Toast.makeText(requireContext(), "Successfully removed: ${args.currentNote.title}", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+        }
+        builder.setNegativeButton("No"){ _, _ -> }
+        builder.setTitle("Deleter ${args.currentNote.title}?")
+        builder.setMessage("Are you sure you want to delete ${args.currentNote.title}?")
+        builder.create().show()
+    }
 
 }
